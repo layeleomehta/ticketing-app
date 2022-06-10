@@ -1,11 +1,8 @@
 import express, {NextFunction, Request, Response} from 'express'; 
-import { body, validationResult } from 'express-validator';
+import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import { RequestValidationError } from '../errors/request-validation-error';
+import { validateRequest } from '../middlewares/validate-request';
 import { User } from '../models/user';
-import { Password } from '../services/password';
-
-
 
 const router = express.Router(); 
 
@@ -18,13 +15,9 @@ router.post('/api/users/signup',
       .trim()
       .isLength({ min: 4, max: 20 })
       .withMessage("Please enter a password!")
-    ],
+    ], 
+    validateRequest,
     async (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req); 
-
-    if(!errors.isEmpty()){
-        next(new RequestValidationError(errors.array())); 
-    }
 
     const { email, password } = req.body; 
 

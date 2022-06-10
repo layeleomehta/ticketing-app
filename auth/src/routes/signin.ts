@@ -1,7 +1,7 @@
 import express, {Request, Response} from 'express'; 
-import { body, validationResult } from 'express-validator';
+import { body } from 'express-validator';
 import { DatabaseConnectionError } from '../errors/database-connection-error';
-import { RequestValidationError } from '../errors/request-validation-error';
+import { validateRequest } from '../middlewares/validate-request';
 
 const router = express.Router(); 
 
@@ -11,17 +11,11 @@ router.post('/api/users/signin',
                 .withMessage("Please enter a valid email!"), 
               body('password')
                 .trim()
-                .isLength({ min: 4, max: 20 })
+                .notEmpty()
                 .withMessage("Please enter a password!")
-            ],
+            ], 
+            validateRequest, 
             (req: Request, res: Response) => {
-                const errors = validationResult(req); 
-
-                if(!errors.isEmpty()){
-                    throw new RequestValidationError(errors.array()); 
-                    return res.send(errors.array()); 
-                }
-
                 const { email, password } = req.body; 
                 res.send("Hi"); 
 })
