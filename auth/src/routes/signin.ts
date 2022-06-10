@@ -24,19 +24,19 @@ router.post('/api/users/signin',
         // check if user with the email exists, if not throw error
         const existingUser = await User.findOne({ email }); 
         if(!existingUser){
-            next(new BadRequestError("Invalid credentials!")); 
+            return next(new BadRequestError("Invalid credentials!")); 
         }
 
         // compare hashed password with stored user password, throw error if passwords don't match
-        const matchPassword = Password.compare(existingUser!.password, password); 
+        const matchPassword = Password.compare(existingUser.password, password); 
         if(!matchPassword){
-             next(new BadRequestError("Invalid credentials!")); 
+             return next(new BadRequestError("Invalid credentials!")); 
         }
 
         // send back token
         const jwtToken = jwt.sign({
-            id: existingUser!.id, 
-            email: existingUser!.email
+            id: existingUser.id, 
+            email: existingUser.email
         }, process.env.JWT_KEY!); 
     
         req.session = {
