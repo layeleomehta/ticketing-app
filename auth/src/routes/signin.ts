@@ -28,7 +28,7 @@ router.post('/api/users/signin',
         }
 
         // compare hashed password with stored user password, throw error if passwords don't match
-        const matchPassword = Password.compare(existingUser.password, password); 
+        const matchPassword = await Password.compare(existingUser.password, password); 
         if(!matchPassword){
              return next(new BadRequestError("Invalid credentials!")); 
         }
@@ -43,7 +43,7 @@ router.post('/api/users/signin',
             jwt: jwtToken
         }; 
     
-        res.status(201).send(existingUser); 
+        res.status(200).send(existingUser); 
 })
 
 export { router as signinRouter }; 
