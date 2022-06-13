@@ -1,6 +1,7 @@
 import express, {NextFunction, Request, Response} from 'express'; 
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
+import { BadRequestError } from '../errors/bad-request-error';
 import { validateRequest } from '../middlewares/validate-request';
 import { User } from '../models/user';
 
@@ -24,8 +25,7 @@ router.post('/api/users/signup',
     // check if user already exists
     const existingUser = await User.findOne({ email }); 
     if(existingUser){
-        console.log("Email is in use"); 
-        return res.send({}); 
+        return next(new BadRequestError('Email in use')); 
     }
     
 
