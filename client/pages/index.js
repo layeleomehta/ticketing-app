@@ -11,7 +11,9 @@ LandingPage.getInitialProps = async () => {
   if(typeof window === 'undefined'){
     // we are on server
     const { data } = await axios.get("http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser", {
-      Host: 'ticketing.dev'
+      headers: {
+        Host: 'ticketing.dev'
+      }
     }); 
     console.log(data); 
     return data; 
@@ -22,8 +24,6 @@ LandingPage.getInitialProps = async () => {
     console.log("browser")
     return data; 
   }
-  console.log("server")
-  return {}; 
 }
 
 export default LandingPage; 
