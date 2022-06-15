@@ -1,29 +1,24 @@
 import axios from 'axios';
 import React, { useState } from 'react'; 
+import useRequest from '../../hooks/use-request';
 
 const signup = () => {
     const [email, setEmail] = useState(""); 
     const [password, setPassword] = useState(""); 
-    const [errors, setErrors] = useState([]); 
+    const { doRequest, errors } = useRequest({ 
+        url: '/api/users/signup', 
+        method: 'post', 
+        body: { email, password }
+    }); 
 
     const onSubmit = async (e) => {
         e.preventDefault(); 
-        try {
-            const response = await axios.post("/api/users/signup", {
-                email, 
-                password
-            }); 
-    
-            console.log(response.data); 
-            
-        } catch (err) {
-            setErrors(err.response.data.errors); 
-        }
+        await doRequest(); 
     }
 
   return (
     <form onSubmit={onSubmit}>
-    <h1>Signup</h1>
+    <h1>Sign Up</h1>
     <div className="mb-3">
         <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
         <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
@@ -32,14 +27,7 @@ const signup = () => {
         <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
         <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="form-control" id="exampleInputPassword1"/>
     </div>
-        {errors.length > 0 && (
-            <div className='alert alert-danger'>
-                <h4>Oops... something went wrong:</h4>
-                <ul className='my-0'>
-                    {errors.map(error => <li key={error.message}>{error.message}</li>)}
-                </ul>
-            </div>
-        )}
+    {errors}
     <button type="submit" className="btn btn-primary">Submit</button>
     </form>
   )
