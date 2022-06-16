@@ -4,7 +4,7 @@ import { currentUserRouter } from "./routes/current-user";
 import { signinRouter } from "./routes/signin";
 import { signupRouter } from "./routes/signup";
 import { signoutRouter } from "./routes/signout";
-import { errorHandler } from "./middlewares/error-handler";
+import { errorHandler } from "@lm-tickets-microservices/common";
 import cookieSession from "cookie-session";
 
 const app = express(); 
