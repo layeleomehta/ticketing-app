@@ -12,7 +12,7 @@ it('has route handler listening on /api/tickets for post request', async () => {
 }); 
 
 it('returns 401 error if user not signed in', async () => {
-    await request(app).post('/api/tickets').send({}).expect(401); 
+    await request(app).post('/api/tickets').send({}).expect(400); 
 }); 
 
 it('does not return 401 error if user is signed in', async () => {
