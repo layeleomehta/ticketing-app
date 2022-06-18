@@ -27,10 +27,41 @@ it('does not return 401 error if user is signed in', async () => {
 }); 
 
 it('returns error if invalid title is provided', async () => {
-    
+    await request(app)
+        .post('/api/tickets')
+        .set('Cookie', signin())
+        .send({
+            title: '', 
+            price: 10
+        })
+        .expect(400); 
+
+    await request(app)
+        .post('/api/tickets')
+        .set('Cookie', signin())
+        .send({ 
+            price: 10
+        })
+        .expect(400); 
 }); 
 
 it('returns error if invalid price is provided', async () => {
+    await request(app)
+        .post('/api/tickets')
+        .set('Cookie', signin())
+        .send({
+            title: 'example', 
+            price: -10
+        })
+        .expect(400); 
+
+    await request(app)
+        .post('/api/tickets')
+        .set('Cookie', signin())
+        .send({ 
+            title: 'example'
+        })
+        .expect(400); 
     
 }); 
 
