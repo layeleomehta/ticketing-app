@@ -1,5 +1,6 @@
 import request from "supertest"; 
 import { app } from "../../app";
+import { Ticket } from "../../models/ticket";
 import { signin } from "../../test/setup";
 
 
@@ -66,5 +67,19 @@ it('returns error if invalid price is provided', async () => {
 }); 
 
 it('creates ticket when valid inputs provided', async () => {
+    let tickets = await Ticket.find({});
+    expect(tickets.length).toEqual(0);  
     
+    await request(app)
+        .post('/api/tickets')
+        .set('Cookie', signin())
+        .send({ 
+            title: 'example', 
+            price: 20
+        })
+        .expect(201); 
+
+    tickets = await Ticket.find(({})); 
+    console.log(tickets); 
+    expect(tickets.length).toEqual(1); 
 }); 
