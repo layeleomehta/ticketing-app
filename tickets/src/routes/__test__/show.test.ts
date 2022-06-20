@@ -1,10 +1,12 @@
+import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../app";
 import { signin } from "../../test/setup";
 
 it('returns 404 if ticket not found', async () => {
+    const id = new mongoose.Types.ObjectId().toHexString(); 
     await request(app)
-        .get('/api/tickets/randomid')
+        .get(`/api/tickets/${id}`)
         .send()
         .expect(404); 
 }); 
@@ -17,20 +19,14 @@ it('returns the ticket if ticket is found', async () => {
         .post('/api/tickets')
         .set('Cookie', signin())
         .send({ 
-            title: 'example', 
-            price: 20
+            title,
+            price
         })
         .expect(201); 
     
-    console.log(response); 
-    
     const ticketResponse = await request(app)
-        .post(`/api/tickets/${response.body.id}`)
-        .set('Cookie', signin())
-        .send({ 
-            title, 
-            price
-        })
+        .get(`/api/tickets/${response.body.id}`)
+        .send()
         .expect(200); 
     
     expect(ticketResponse.body.title).toEqual(title); 

@@ -9,6 +9,7 @@ router.get('/api/tickets/:id', async (req: Request, res: Response, next: NextFun
 
     if(!ticket){
         next(new NotFoundError()); 
+        return; 
     }
 
     res.status(200).send(ticket);
