@@ -27,11 +27,11 @@ afterAll(async () => {
 }); 
 
 // 'faking' auth by manually making and returning cookie to set on request obj
-export const signin = () => {
+export const signin = (id: string, email: string) => {
     // create payload
     const payload = {
-        id: 'asdlsdjsa', 
-        email: "test@test.com"
+        id, 
+        email
     }; 
 
     // create jwt

@@ -19,7 +19,7 @@ it('returns 401 error if user not signed in', async () => {
 it('does not return 401 error if user is signed in', async () => {
     const response = await request(app)
         .post('/api/tickets')
-        .set('Cookie', signin())
+        .set('Cookie', signin("exampleId", "example@example.com"))
         .send({}); 
 
     console.log(response.status); 
@@ -30,7 +30,7 @@ it('does not return 401 error if user is signed in', async () => {
 it('returns error if invalid title is provided', async () => {
     await request(app)
         .post('/api/tickets')
-        .set('Cookie', signin())
+        .set('Cookie', signin("exampleId", "example@example.com"))
         .send({
             title: '', 
             price: 10
@@ -39,7 +39,7 @@ it('returns error if invalid title is provided', async () => {
 
     await request(app)
         .post('/api/tickets')
-        .set('Cookie', signin())
+        .set('Cookie', signin("exampleId", "example@example.com"))
         .send({ 
             price: 10
         })
@@ -49,7 +49,7 @@ it('returns error if invalid title is provided', async () => {
 it('returns error if invalid price is provided', async () => {
     await request(app)
         .post('/api/tickets')
-        .set('Cookie', signin())
+        .set('Cookie', signin("exampleId", "example@example.com"))
         .send({
             title: 'example', 
             price: -10
@@ -58,7 +58,7 @@ it('returns error if invalid price is provided', async () => {
 
     await request(app)
         .post('/api/tickets')
-        .set('Cookie', signin())
+        .set('Cookie', signin("exampleId", "example@example.com"))
         .send({ 
             title: 'example'
         })
@@ -72,7 +72,7 @@ it('creates ticket when valid inputs provided', async () => {
     
     await request(app)
         .post('/api/tickets')
-        .set('Cookie', signin())
+        .set('Cookie', signin("exampleId", "example@example.com"))
         .send({ 
             title: 'example', 
             price: 20
