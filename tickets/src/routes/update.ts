@@ -3,12 +3,19 @@ import { Ticket } from '../models/ticket';
 import {
     NotAuthorizedError,
     NotFoundError,
-    requireAuth
+    requireAuth, 
+    validateRequest
 } from "@lm-tickets-microservices/common"; 
+import { body } from 'express-validator';
 
 const router = express.Router(); 
 
-router.put('/api/tickets/:id', requireAuth, async (req: Request, res: Response, next: NextFunction) => {
+router.put('/api/tickets/:id', [
+    body('title').not().isEmpty().withMessage('Title is a required property of a ticket!'), 
+    body('price').isFloat({gt: 0}).withMessage('Price must be a float greater than 0')
+    ], 
+    validateRequest,
+    requireAuth, async (req: Request, res: Response, next: NextFunction) => {
     const ticket = await Ticket.findById(req.params.id);
 
     if(!ticket){
@@ -19,7 +26,13 @@ router.put('/api/tickets/:id', requireAuth, async (req: Request, res: Response, 
         return next(new NotAuthorizedError()); 
     }
 
-    res.send(ticket); 
+    ticket.set({
+        title: req.body.title, 
+        price: req.body.price
+    }); 
+    await ticket.save(); 
+
+    res.status(200).send(ticket); 
 
 }); 
 
