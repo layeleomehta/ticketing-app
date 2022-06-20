@@ -80,6 +80,5 @@ it('creates ticket when valid inputs provided', async () => {
         .expect(201); 
 
     tickets = await Ticket.find(({})); 
-    console.log(tickets); 
     expect(tickets.length).toEqual(1); 
 }); 
