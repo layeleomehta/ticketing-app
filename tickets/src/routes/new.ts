@@ -29,7 +29,7 @@ router.post('/api/tickets', [
             price: ticket.price, 
             userId: ticket.userId
         }); 
-        console.log("publishing")
+        console.log("published TicketCreatedEvent to NATS")
         res.status(201).send(ticket); 
 }); 
 
