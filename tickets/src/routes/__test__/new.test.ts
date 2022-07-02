@@ -3,7 +3,6 @@ import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import { signin } from "../../test/setup";
 
-
 it('has route handler listening on /api/tickets for post request', async () => {
     const response = await request(app)
                         .post("/api/tickets")
