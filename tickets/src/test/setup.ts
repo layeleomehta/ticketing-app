@@ -5,7 +5,7 @@ import request from "supertest";
 import jwt from 'jsonwebtoken'; 
 
 let mongo: any; 
-jest.mock('../nats-wrapper.ts')
+jest.doMock('../nats-wrapper')
 beforeAll(async () => {
     process.env.JWT_KEY = 'secret'; 
     mongo = await MongoMemoryServer.create(); 
