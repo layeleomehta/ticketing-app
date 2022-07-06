@@ -1,6 +1,8 @@
 import { OrderStatus } from "@lm-tickets-microservices/common";
 import mongoose from "mongoose";
 
+export { OrderStatus }; 
+
 interface OrderAttrs {
     userId: string;
     status: OrderStatus;
